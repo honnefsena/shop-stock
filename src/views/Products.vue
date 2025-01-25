@@ -157,8 +157,8 @@ export default {
         productId: this.selectedProduct.id,
         data: stockData
       })
-      this.closeStockModal()
-      this.fetchProducts()
+      //this.closeStockModal()
+      //this.fetchProducts()
     },
   },
   mounted() {
