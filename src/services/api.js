@@ -2,7 +2,7 @@
 import axios from "axios"
 
 const api = axios.create({
-  baseURL: "https://setelip.com.br/shop-stock-jumap/api",
+  baseURL: "https://setelip.com.br/shop-stock-jumap",
   headers: {
     "Content-Type": "application/json",
   },
