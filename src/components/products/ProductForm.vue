@@ -8,7 +8,7 @@
     >
       <div class="mt-3">
         <h3 class="text-lg font-medium text-gray-900">
-          {{ product ? "Edit Product" : "Add New Product" }}
+          {{ product ? "Editar Produto" : "Novo Produto" }}
         </h3>
         <form @submit.prevent="handleSubmit" class="mt-4">
           <div class="mb-4">
