@@ -1,0 +1,36 @@
+// src/router/index.js
+import { createRouter, createWebHistory } from "vue-router"
+
+const routes = [
+  {
+    path: "/",
+    redirect: "/products",
+  },
+  {
+    path: "/products",
+    name: "Products",
+    component: () => import("@/views/Products.vue"),
+  },
+  {
+    path: "/inventory",
+    name: "Inventory",
+    component: () => import("@/views/Inventory.vue"),
+  },
+  {
+    path: "/sales",
+    name: "Sales",
+    component: () => import("@/views/Sales.vue"),
+  },
+  {
+    path: "/reports",
+    name: "Reports",
+    component: () => import("@/views/Reports.vue"),
+  },
+]
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+})
+
+export default router
