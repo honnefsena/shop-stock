@@ -14,7 +14,7 @@ export const productService = {
   get: (id) => api.get(`/products/${id}`),
   create: (data) => api.post("/products", data),
   update(id, data) {
-    return axios.put(`/products/${id}`, data)
+    return api.put(`/products/${id}`, data)
   },
   delete: (id) => api.delete(`/products/${id}`),
 }
@@ -22,12 +22,12 @@ export const productService = {
 // Inventory Service
 export const inventoryService = {
   async updateStock(productId, data) {
-    return axios.put(`/products/${productId}/stock`, {
+    return api.put(`/products/${productId}/stock`, {
       quantity: data.quantity,
     })
   },
   async getStock(productId) {
-    return axios.get(`/products/${productId}/stock`)
+    return api.get(`/products/${productId}/stock`)
   },
 }
 
