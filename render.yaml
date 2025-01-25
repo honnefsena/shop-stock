@@ -1,9 +1,9 @@
 services:
   - type: web
-    name: your-app-name
+    name: shop-stock-frontend
     buildCommand: npm install && npm run build
-    startCommand: npm start
-    env: node
+    staticPublishPath: ./dist
+    env: static
     routes:
       - type: rewrite
         source: /*
