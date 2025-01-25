@@ -3,18 +3,20 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
+  base: '/',
   plugins: [vue()],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
   },
   server: {
     proxy: {
       '/api': {
         target: 'https://setelip.com.br/shop-stock-jumap/',
         changeOrigin: true,
-      }
-    }
-  }
-})
+      },
+    },
+  },
+});
+
