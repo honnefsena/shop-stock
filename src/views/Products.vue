@@ -153,12 +153,12 @@ export default {
     },
 
     async saveStock(stockData) {
-      await this.updateStock({
+      await this.$store.dispatch("inventory/updateStock", {
         productId: this.selectedProduct.id,
         data: stockData
       })
-      //this.closeStockModal()
-      //this.fetchProducts()
+      this.closeStockModal()
+      this.fetchProducts()
     },
   },
   mounted() {
