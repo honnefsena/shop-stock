@@ -131,6 +131,9 @@ const sales = {
   actions: {
     async createSale({ commit, dispatch }, saleData) {
       try {
+        console.log("Creating sale with data in Vuex:", saleData)
+        // The issue is here - we need to pass the entire saleData object
+        // which contains both items and payment_method
         await salesService.create(saleData)
         dispatch("fetchSales")
       } catch (error) {
