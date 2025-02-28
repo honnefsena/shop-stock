@@ -29,6 +29,11 @@
             <th
               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
             >
+              Pagto
+            </th>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+            >
               Itens
             </th>
             <th
@@ -48,6 +53,9 @@
             <td class="px-6 py-4 whitespace-nowrap">#{{ sale.id }}</td>
             <td class="px-6 py-4 whitespace-nowrap">
               {{ new Date(sale.sale_date).toLocaleDateString() }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              {{ formatPaymentMethod(sale.payment_method) }}
             </td>
             <td class="px-6 py-4">
               <div v-for="item in sale.items" :key="item.id" class="text-sm">
@@ -120,6 +128,17 @@ export default {
     onSaleComplete() {
       this.showNewSaleModal = false
       this.fetchSales()
+    },
+    formatPaymentMethod(method) {
+      if (!method) return " - "
+
+      const paymentMethods = {
+        pix: "PIX",
+        cartao: "Cartão",
+        dinheiro: "Dinheiro",
+      }
+
+      return paymentMethods[method] || method
     },
   },
   mounted() {

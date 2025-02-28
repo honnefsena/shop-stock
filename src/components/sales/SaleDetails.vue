@@ -42,6 +42,12 @@
               </p>
             </div>
             <div>
+              <p class="text-sm text-gray-500">Método de pagamento</p>
+              <p class="text-sm font-medium">
+                {{ formatPaymentMethod(sale.payment_method) }}
+              </p>
+            </div>
+            <div>
               <p class="text-sm text-gray-500">Valor total</p>
               <p class="text-sm font-medium">R$ {{ sale.total_amount }}</p>
             </div>
@@ -140,6 +146,17 @@ export default {
       const price = item.unit_price * item.quantity
       const discount = price * (item.discount_percentage / 100)
       return (price - discount).toFixed(2)
+    },
+    formatPaymentMethod(method) {
+      if (!method) return "Not Specified"
+
+      const paymentMethods = {
+        pix: "PIX",
+        cartao: "Cartão",
+        dinheiro: "Dinheiro",
+      }
+
+      return paymentMethods[method] || method
     },
   },
 }

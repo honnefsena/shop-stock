@@ -137,6 +137,52 @@
           </div>
         </div>
 
+        <!-- Payment Method -->
+        <div class="mt-6">
+          <label class="block text-sm font-medium text-gray-700"
+            >Método pagto</label
+          >
+          <div class="mt-2 flex space-x-4">
+            <div class="flex items-center">
+              <input
+                id="pix"
+                name="payment_method"
+                type="radio"
+                v-model="paymentMethod"
+                value="pix"
+                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500"
+              />
+              <label for="pix" class="ml-2 text-sm text-gray-700">PIX</label>
+            </div>
+            <div class="flex items-center">
+              <input
+                id="cartao"
+                name="payment_method"
+                type="radio"
+                v-model="paymentMethod"
+                value="cartao"
+                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500"
+              />
+              <label for="cartao" class="ml-2 text-sm text-gray-700"
+                >Cartão</label
+              >
+            </div>
+            <div class="flex items-center">
+              <input
+                id="dinheiro"
+                name="payment_method"
+                type="radio"
+                v-model="paymentMethod"
+                value="dinheiro"
+                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500"
+              />
+              <label for="dinheiro" class="ml-2 text-sm text-gray-700"
+                >Dinheiro</label
+              >
+            </div>
+          </div>
+        </div>
+
         <!-- Total -->
         <div class="mt-6 flex justify-end">
           <div class="text-lg font-medium">Total: R${{ calculateTotal }}</div>
@@ -182,6 +228,7 @@ export default {
         unit_price: 0,
       },
       items: [],
+      paymentMethod: "cartao",
     }
   },
   computed: {

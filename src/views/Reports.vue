@@ -28,6 +28,7 @@
     <div class="mt-6">
       <StockReport v-if="currentTab === 'stock'" />
       <SalesReport v-if="currentTab === 'sales'" />
+      <PaymentReport v-if="currentTab === 'payment'" />
     </div>
   </div>
 </template>
@@ -35,12 +36,14 @@
 <script>
 import StockReport from "@/views/Reports/StockReport.vue"
 import SalesReport from "@/views/Reports/SalesReport.vue"
+import PaymentReport from "@/views/Reports/PaymentReport.vue"
 
 export default {
   name: "Reports",
   components: {
     StockReport,
     SalesReport,
+    PaymentReport,
   },
   data() {
     return {
@@ -48,6 +51,7 @@ export default {
       tabs: [
         { name: "stock", label: "Estoque" },
         { name: "sales", label: "Vendas" },
+        { name: "payment", label: "Método de pagto" },
       ],
     }
   },
