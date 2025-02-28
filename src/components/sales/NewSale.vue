@@ -298,7 +298,16 @@ export default {
 
     async completeSale() {
       try {
-        await this.createSale({ items: this.items })
+        console.log("Sending sale data:", {
+          items: this.items,
+          payment_method: this.paymentMethod,
+        })
+
+        await this.createSale({
+          items: this.items,
+          payment_method: this.paymentMethod,
+        })
+
         this.$emit("sale-complete")
       } catch (error) {
         console.error("Error creating sale:", error)
