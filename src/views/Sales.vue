@@ -136,6 +136,9 @@ export default {
         pix: "PIX",
         cartao: "Cartão",
         dinheiro: "Dinheiro",
+        "pix + cartao": "PIX + Cartão",
+        "pix + dinheiro": "PIX + Dinheiro",
+        "cartao + dinheiro": "Cartão + Dinheiro",
       }
 
       return paymentMethods[method] || method

@@ -232,6 +232,9 @@ export default {
             pix: 0,
             cartao: 0,
             dinheiro: 0,
+            "pix + cartao": 0,
+            "pix + dinheiro": 0,
+            "cartao + dinheiro": 0,
             unknown: 0,
           }
         }
@@ -263,6 +266,9 @@ export default {
         pix: "PIX",
         cartao: "Cartão",
         dinheiro: "Dinheiro",
+        "pix + cartao": "PIX + Cartão",
+        "pix + dinheiro": "PIX + Dinheiro",
+        "cartao + dinheiro": "Cartão + Dinheiro",
         unknown: "-",
       }
 
@@ -327,13 +333,16 @@ export default {
         ...summaryRows,
         [""],
         ["Monthly Breakdown"],
-        ["Month", "PIX", "Cartão", "Dinheiro", "-"],
+        ["Month", "PIX", "Cartão", "Dinheiro", "PIX + Cartão", "PIX + Dinheiro", "Cartão + Dinheiro", "-"],
         // Monthly data
         ...this.monthlyTrendsData.map((month) => [
           month.month,
           month.pix.toFixed(2),
           month.cartao.toFixed(2),
           month.dinheiro.toFixed(2),
+          month["pix + cartao"].toFixed(2),
+          month["pix + dinheiro"].toFixed(2),
+          month["cartao + dinheiro"].toFixed(2),
           month.unknown.toFixed(2),
         ]),
       ]

@@ -142,43 +142,89 @@
           <label class="block text-sm font-medium text-gray-700"
             >Método pagto</label
           >
-          <div class="mt-2 flex space-x-4">
-            <div class="flex items-center">
-              <input
-                id="pix"
-                name="payment_method"
-                type="radio"
-                v-model="paymentMethod"
-                value="pix"
-                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500"
-              />
-              <label for="pix" class="ml-2 text-sm text-gray-700">PIX</label>
+          <div class="mt-2 grid grid-cols-2 gap-4">
+            <!-- Single payment methods -->
+            <div class="space-y-3">
+              <div class="flex items-center">
+                <input
+                  id="pix"
+                  name="payment_method"
+                  type="radio"
+                  v-model="paymentMethod"
+                  value="pix"
+                  class="h-4 w-4 text-indigo-600 focus:ring-indigo-500"
+                />
+                <label for="pix" class="ml-2 text-sm text-gray-700">PIX</label>
+              </div>
+              <div class="flex items-center">
+                <input
+                  id="cartao"
+                  name="payment_method"
+                  type="radio"
+                  v-model="paymentMethod"
+                  value="cartao"
+                  class="h-4 w-4 text-indigo-600 focus:ring-indigo-500"
+                />
+                <label for="cartao" class="ml-2 text-sm text-gray-700"
+                  >Cartão</label
+                >
+              </div>
+              <div class="flex items-center">
+                <input
+                  id="dinheiro"
+                  name="payment_method"
+                  type="radio"
+                  v-model="paymentMethod"
+                  value="dinheiro"
+                  class="h-4 w-4 text-indigo-600 focus:ring-indigo-500"
+                />
+                <label for="dinheiro" class="ml-2 text-sm text-gray-700"
+                  >Dinheiro</label
+                >
+              </div>
             </div>
-            <div class="flex items-center">
-              <input
-                id="cartao"
-                name="payment_method"
-                type="radio"
-                v-model="paymentMethod"
-                value="cartao"
-                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500"
-              />
-              <label for="cartao" class="ml-2 text-sm text-gray-700"
-                >Cartão</label
-              >
-            </div>
-            <div class="flex items-center">
-              <input
-                id="dinheiro"
-                name="payment_method"
-                type="radio"
-                v-model="paymentMethod"
-                value="dinheiro"
-                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500"
-              />
-              <label for="dinheiro" class="ml-2 text-sm text-gray-700"
-                >Dinheiro</label
-              >
+            
+            <!-- Combined payment methods -->
+            <div class="space-y-3">
+              <div class="flex items-center">
+                <input
+                  id="pix_cartao"
+                  name="payment_method"
+                  type="radio"
+                  v-model="paymentMethod"
+                  value="pix + cartao"
+                  class="h-4 w-4 text-indigo-600 focus:ring-indigo-500"
+                />
+                <label for="pix_cartao" class="ml-2 text-sm text-gray-700"
+                  >PIX + Cartão</label
+                >
+              </div>
+              <div class="flex items-center">
+                <input
+                  id="pix_dinheiro"
+                  name="payment_method"
+                  type="radio"
+                  v-model="paymentMethod"
+                  value="pix + dinheiro"
+                  class="h-4 w-4 text-indigo-600 focus:ring-indigo-500"
+                />
+                <label for="pix_dinheiro" class="ml-2 text-sm text-gray-700"
+                  >PIX + Dinheiro</label
+                >
+              </div>
+              <div class="flex items-center">
+                <input
+                  id="cartao_dinheiro"
+                  name="payment_method"
+                  type="radio"
+                  v-model="paymentMethod"
+                  value="cartao + dinheiro"
+                  class="h-4 w-4 text-indigo-600 focus:ring-indigo-500"
+                />
+                <label for="cartao_dinheiro" class="ml-2 text-sm text-gray-700"
+                  >Cartão + Dinheiro</label
+                >
+              </div>
             </div>
           </div>
         </div>
