@@ -136,13 +136,79 @@
       </div>
     </div>
 
-    <!-- Gráfico de Distribuição por Tamanho -->
+    <!-- Listagem de Vendas Filtradas -->
     <div class="mb-6">
       <h4 class="text-base font-medium text-gray-900 mb-4">
-        Vendas por Tamanho
+        Vendas Filtradas ({{ totalSales }} vendas)
       </h4>
-      <div class="h-64">
-        <PieChart :data="sizeDistributionData" />
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+              >
+                Data
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+              >
+                ID da Venda
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+              >
+                Produtos
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+              >
+                Total
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+              >
+                Status
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr v-for="sale in salesData" :key="sale.id" class="hover:bg-gray-50">
+              <td class="px-6 py-4 text-sm text-gray-900">
+                {{ formatDate(sale.sale_date) }}
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-500">
+                #{{ sale.id }}
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-900">
+                <div class="space-y-1">
+                  <div v-for="item in sale.items" :key="`${sale.id}-${item.product_id}-${item.size}`" class="text-xs">
+                    <span class="font-medium">{{ item.product_name }}</span>
+                    <span class="text-gray-500"> - Tamanho: {{ item.size }}</span>
+                    <span class="text-gray-500"> - Qtd: {{ item.quantity }}</span>
+                    <span class="text-gray-500"> - R$ {{ parseFloat(item.unit_price).toFixed(2) }}</span>
+                    <span v-if="item.discount_percentage > 0" class="text-green-600">
+                      ({{ item.discount_percentage }}% desc.)
+                    </span>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                R$ {{ parseFloat(sale.total_amount).toFixed(2) }}
+              </td>
+              <td class="px-6 py-4 text-sm">
+                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                  Concluída
+                </span>
+              </td>
+            </tr>
+            <tr v-if="!salesData.length" class="hover:bg-gray-50">
+              <td colspan="5" class="px-6 py-4 text-sm text-gray-500 text-center">
+                Nenhuma venda encontrada no período selecionado
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -161,13 +227,11 @@
 <script>
 import { mapActions } from "vuex"
 import LineChart from "@/components/charts/LineChart.vue"
-import PieChart from "@/components/charts/PieChart.vue"
 
 export default {
   name: "SalesReport",
   components: {
     LineChart,
-    PieChart,
   },
   data() {
     return {
@@ -234,31 +298,23 @@ export default {
         .sort((a, b) => b.revenue - a.revenue)
         .slice(0, 5)
     },
-    sizeDistributionData() {
-      const sizeCount = {}
-      this.salesData.forEach((sale) => {
-        sale.items.forEach((item) => {
-          sizeCount[item.size] = (sizeCount[item.size] || 0) + item.quantity
-        })
-      })
-
-      return Object.entries(sizeCount).map(([size, count]) => ({
-        name: size,
-        value: count,
-      }))
-    },
   },
   methods: {
     ...mapActions("sales", ["fetchSaleReport"]),
 
     getDefaultStartDate() {
       const date = new Date()
-      date.setMonth(date.getMonth() - 1)
+      date.setDate(date.getDate() - 2)
       return date.toISOString().split("T")[0]
     },
 
     getDefaultEndDate() {
       return new Date().toISOString().split("T")[0]
+    },
+
+    formatDate(dateString) {
+      const date = new Date(dateString)
+      return date.toLocaleDateString('pt-BR')
     },
 
     groupSalesByDate() {
