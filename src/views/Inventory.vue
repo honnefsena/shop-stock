@@ -97,7 +97,7 @@
             <td class="px-6 py-4">
               <span
                 :class="[
-                  'px-2 inline-flex text-xs leading-5 font-semibold rounded-full',
+                  'px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-center w-16',
                   getStockStatusClass(item.quantity),
                 ]"
               >
@@ -107,9 +107,22 @@
             <td class="px-6 py-4">
               <button
                 @click="updateStock(item)"
-                class="text-indigo-600 hover:text-indigo-900"
+                class="text-indigo-600 hover:text-indigo-900 p-2 rounded-md hover:bg-indigo-50"
+                title="Atualizar estoque"
               >
-                Atualizar estoque
+                <svg
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                  />
+                </svg>
               </button>
             </td>
           </tr>
@@ -201,9 +214,9 @@ export default {
     },
 
     getStockStatus(quantity) {
-      if (quantity === 0) return "Esgotado"
-      if (quantity <= this.lowStockThreshold) return "Estoque baixo"
-      return "Estoque ok"
+      if (quantity === 0) return "Zero ❌"
+      if (quantity <= this.lowStockThreshold) return "Baixo 👎"
+      return "Ok 👍"
     },
 
     getStockStatusClass(quantity) {
