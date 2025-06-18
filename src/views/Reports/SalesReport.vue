@@ -33,193 +33,199 @@
         <div class="flex items-end">
           <button
             @click="fetchSalesData"
-            class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+            :disabled="isLoading"
+            class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Aplicar Filtro
+            {{ isLoading ? 'Carregando...' : 'Aplicar Filtro' }}
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Cartões de Resumo -->
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-3 mb-6">
-      <div class="bg-gray-50 overflow-hidden shadow rounded-lg">
-        <div class="px-4 py-5 sm:p-6">
-          <dt class="text-sm font-medium text-gray-500 truncate">
-            Receita Total
-          </dt>
-          <dd class="mt-1 text-3xl font-semibold text-gray-900">
-            R$ {{ totalRevenue.toFixed(2) }}
-          </dd>
+    <!-- Loading indicator -->
+    <Loader v-if="isLoading" text="Carregando dados de vendas..." />
+
+    <div v-else>
+      <!-- Cartões de Resumo -->
+      <div class="grid grid-cols-1 gap-5 sm:grid-cols-3 mb-6">
+        <div class="bg-gray-50 overflow-hidden shadow rounded-lg">
+          <div class="px-4 py-5 sm:p-6">
+            <dt class="text-sm font-medium text-gray-500 truncate">
+              Receita Total
+            </dt>
+            <dd class="mt-1 text-3xl font-semibold text-gray-900">
+              R$ {{ totalRevenue.toFixed(2) }}
+            </dd>
+          </div>
+        </div>
+        <div class="bg-gray-50 overflow-hidden shadow rounded-lg">
+          <div class="px-4 py-5 sm:p-6">
+            <dt class="text-sm font-medium text-gray-500 truncate">
+              Vendas Totais
+            </dt>
+            <dd class="mt-1 text-3xl font-semibold text-gray-900">
+              {{ totalSales }}
+            </dd>
+          </div>
+        </div>
+        <div class="bg-gray-50 overflow-hidden shadow rounded-lg">
+          <div class="px-4 py-5 sm:p-6">
+            <dt class="text-sm font-medium text-gray-500 truncate">
+              Valor Médio de Venda
+            </dt>
+            <dd class="mt-1 text-3xl font-semibold text-gray-900">
+              R$ {{ averageSaleValue.toFixed(2) }}
+            </dd>
+          </div>
         </div>
       </div>
-      <div class="bg-gray-50 overflow-hidden shadow rounded-lg">
-        <div class="px-4 py-5 sm:p-6">
-          <dt class="text-sm font-medium text-gray-500 truncate">
-            Vendas Totais
-          </dt>
-          <dd class="mt-1 text-3xl font-semibold text-gray-900">
-            {{ totalSales }}
-          </dd>
+
+      <!-- Gráfico de Vendas -->
+      <div class="mb-6">
+        <h4 class="text-base font-medium text-gray-900 mb-4">
+          Tendência de Vendas
+        </h4>
+        <div class="h-64">
+          <LineChart :data="salesTrendData" />
         </div>
       </div>
-      <div class="bg-gray-50 overflow-hidden shadow rounded-lg">
-        <div class="px-4 py-5 sm:p-6">
-          <dt class="text-sm font-medium text-gray-500 truncate">
-            Valor Médio de Venda
-          </dt>
-          <dd class="mt-1 text-3xl font-semibold text-gray-900">
-            R$ {{ averageSaleValue.toFixed(2) }}
-          </dd>
+
+      <!-- Tabela de Produtos Mais Vendidos -->
+      <div class="mb-6">
+        <h4 class="text-base font-medium text-gray-900 mb-4">
+          Produtos Mais Vendidos
+        </h4>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Produto
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Unidades Vendidas
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Receita
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Preço Médio
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr v-for="product in topProducts" :key="product.id">
+                <td class="px-6 py-4 text-sm text-gray-900">
+                  {{ product.name }}
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-500">
+                  {{ product.unitsSold }}
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-900">
+                  R${{ product.revenue.toFixed(2) }}
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-900">
+                  R${{ product.averagePrice.toFixed(2) }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-    </div>
 
-    <!-- Gráfico de Vendas -->
-    <div class="mb-6">
-      <h4 class="text-base font-medium text-gray-900 mb-4">
-        Tendência de Vendas
-      </h4>
-      <div class="h-64">
-        <LineChart :data="salesTrendData" />
-      </div>
-    </div>
-
-    <!-- Tabela de Produtos Mais Vendidos -->
-    <div class="mb-6">
-      <h4 class="text-base font-medium text-gray-900 mb-4">
-        Produtos Mais Vendidos
-      </h4>
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
-            <tr>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-              >
-                Produto
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-              >
-                Unidades Vendidas
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-              >
-                Receita
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-              >
-                Preço Médio
-              </th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="product in topProducts" :key="product.id">
-              <td class="px-6 py-4 text-sm text-gray-900">
-                {{ product.name }}
-              </td>
-              <td class="px-6 py-4 text-sm text-gray-500">
-                {{ product.unitsSold }}
-              </td>
-              <td class="px-6 py-4 text-sm text-gray-900">
-                R${{ product.revenue.toFixed(2) }}
-              </td>
-              <td class="px-6 py-4 text-sm text-gray-900">
-                R${{ product.averagePrice.toFixed(2) }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Listagem de Vendas Filtradas -->
-    <div class="mb-6">
-      <h4 class="text-base font-medium text-gray-900 mb-4">
-        Vendas Filtradas ({{ totalSales }} vendas)
-      </h4>
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
-            <tr>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-              >
-                Data
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-              >
-                ID da Venda
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-              >
-                Produtos
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-              >
-                Total
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-              >
-                Status
-              </th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="sale in salesData" :key="sale.id" class="hover:bg-gray-50">
-              <td class="px-6 py-4 text-sm text-gray-900">
-                {{ formatDate(sale.sale_date) }}
-              </td>
-              <td class="px-6 py-4 text-sm text-gray-500">
-                #{{ sale.id }}
-              </td>
-              <td class="px-6 py-4 text-sm text-gray-900">
-                <div class="space-y-1">
-                  <div v-for="item in sale.items" :key="`${sale.id}-${item.product_id}-${item.size}`" class="text-xs">
-                    <span class="font-medium">{{ item.product_name }}</span>
-                    <span class="text-gray-500"> - Tamanho: {{ item.size }}</span>
-                    <span class="text-gray-500"> - Qtd: {{ item.quantity }}</span>
-                    <span class="text-gray-500"> - R$ {{ parseFloat(item.unit_price).toFixed(2) }}</span>
-                    <span v-if="item.discount_percentage > 0" class="text-green-600">
-                      ({{ item.discount_percentage }}% desc.)
-                    </span>
+      <!-- Listagem de Vendas Filtradas -->
+      <div class="mb-6">
+        <h4 class="text-base font-medium text-gray-900 mb-4">
+          Vendas Filtradas ({{ totalSales }} vendas)
+        </h4>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Data
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  ID da Venda
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Produtos
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Total
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Status
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr v-for="sale in salesData" :key="sale.id" class="hover:bg-gray-50">
+                <td class="px-6 py-4 text-sm text-gray-900">
+                  {{ formatDate(sale.sale_date) }}
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-500">
+                  #{{ sale.id }}
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-900">
+                  <div class="space-y-1">
+                    <div v-for="item in sale.items" :key="`${sale.id}-${item.product_id}-${item.size}`" class="text-xs">
+                      <span class="font-medium">{{ item.product_name }}</span>
+                      <span class="text-gray-500"> - Tamanho: {{ item.size }}</span>
+                      <span class="text-gray-500"> - Qtd: {{ item.quantity }}</span>
+                      <span class="text-gray-500"> - R$ {{ parseFloat(item.unit_price).toFixed(2) }}</span>
+                      <span v-if="item.discount_percentage > 0" class="text-green-600">
+                        ({{ item.discount_percentage }}% desc.)
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </td>
-              <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                R$ {{ parseFloat(sale.total_amount).toFixed(2) }}
-              </td>
-              <td class="px-6 py-4 text-sm">
-                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                  Concluída
-                </span>
-              </td>
-            </tr>
-            <tr v-if="!salesData.length" class="hover:bg-gray-50">
-              <td colspan="5" class="px-6 py-4 text-sm text-gray-500 text-center">
-                Nenhuma venda encontrada no período selecionado
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                </td>
+                <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                  R$ {{ parseFloat(sale.total_amount).toFixed(2) }}
+                </td>
+                <td class="px-6 py-4 text-sm">
+                  <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                    Concluída
+                  </span>
+                </td>
+              </tr>
+              <tr v-if="!salesData.length" class="hover:bg-gray-50">
+                <td colspan="5" class="px-6 py-4 text-sm text-gray-500 text-center">
+                  Nenhuma venda encontrada no período selecionado
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
 
-    <!-- Botão de Exportação -->
-    <div class="flex justify-end">
-      <button
-        @click="exportReport"
-        class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
-      >
-        Exportar Relatório
-      </button>
+      <!-- Botão de Exportação -->
+      <div class="flex justify-end">
+        <button
+          @click="exportReport"
+          class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+        >
+          Exportar Relatório
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -227,11 +233,13 @@
 <script>
 import { mapActions } from "vuex"
 import LineChart from "@/components/charts/LineChart.vue"
+import Loader from "@/components/common/Loader.vue"
 
 export default {
   name: "SalesReport",
   components: {
     LineChart,
+    Loader,
   },
   data() {
     return {

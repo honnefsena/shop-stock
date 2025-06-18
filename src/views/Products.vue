@@ -14,7 +14,7 @@
 
     <!-- Products List -->
     <div class="bg-white shadow rounded-lg">
-      <div v-if="loading">Loading...</div>
+      <Loader v-if="loading" />
       <div v-else-if="error">{{ error }}</div>
 
       <table class="min-w-full divide-y divide-gray-200" v-else>
@@ -118,12 +118,14 @@
 import { mapState, mapActions } from "vuex"
 import ProductForm from "@/components/products/ProductForm.vue"
 import StockUpdate from "@/components/inventory/StockUpdate.vue"
+import Loader from "@/components/common/Loader.vue"
 
 export default {
   name: "Products",
   components: {
     ProductForm,
     StockUpdate,
+    Loader,
   },
   data() {
     return {

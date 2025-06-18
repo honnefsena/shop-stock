@@ -11,8 +11,13 @@
       </button>
     </div>
 
+    <!-- Loading State -->
+    <div v-if="loading" class="bg-white shadow rounded-lg p-8">
+      <Loader text="Carregando vendas..." />
+    </div>
+
     <!-- Sales List -->
-    <div class="bg-white shadow rounded-lg overflow-hidden">
+    <div v-else class="bg-white shadow rounded-lg overflow-hidden">
       <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
           <tr>
@@ -124,6 +129,7 @@ import { mapState, mapActions } from "vuex"
 import NewSale from "@/components/sales/NewSale.vue"
 import SaleDetails from "@/components/sales/SaleDetails.vue"
 import ConfirmDialog from "@/components/common/ConfirmDialog.vue"
+import Loader from "@/components/common/Loader.vue"
 
 export default {
   name: "Sales",
@@ -131,6 +137,7 @@ export default {
     NewSale,
     SaleDetails,
     ConfirmDialog,
+    Loader,
   },
   data() {
     return {

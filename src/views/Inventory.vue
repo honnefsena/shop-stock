@@ -4,130 +4,136 @@
       <h2 class="text-2xl font-bold text-gray-900">Estoque</h2>
     </div>
 
-    <!-- Stock Summary Cards -->
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-3 mb-6">
-      <div class="bg-white overflow-hidden shadow rounded-lg">
-        <div class="px-4 py-5 sm:p-6">
-          <dt class="text-sm font-medium text-gray-500 truncate">
-            Total Produtos
-          </dt>
-          <dd class="mt-1 text-3xl font-semibold text-gray-900">
-            {{ totalProducts }}
-          </dd>
-        </div>
-      </div>
-      <div class="bg-white overflow-hidden shadow rounded-lg">
-        <div class="px-4 py-5 sm:p-6">
-          <dt class="text-sm font-medium text-gray-500 truncate">
-            Itens Estoque Baixo
-          </dt>
-          <dd class="mt-1 text-3xl font-semibold text-orange-600">
-            {{ lowStockItems }}
-          </dd>
-        </div>
-      </div>
-      <div class="bg-white overflow-hidden shadow rounded-lg">
-        <div class="px-4 py-5 sm:p-6">
-          <dt class="text-sm font-medium text-gray-500 truncate">
-            Itens Esgotados
-          </dt>
-          <dd class="mt-1 text-3xl font-semibold text-red-600">
-            {{ outOfStockItems }}
-          </dd>
-        </div>
-      </div>
-    </div>
+    <!-- Loader -->
+    <Loader v-if="loading" text="Carregando estoque..." />
 
-    <!-- Search and Filter -->
-    <div class="bg-white shadow rounded-lg p-6 mb-6">
-      <div class="flex space-x-4">
-        <div class="flex-1">
-          <input
-            v-model="search"
-            type="text"
-            placeholder="Procurar produtos..."
-            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-          />
+    <!-- Content when not loading -->
+    <div v-else>
+      <!-- Stock Summary Cards -->
+      <div class="grid grid-cols-1 gap-5 sm:grid-cols-3 mb-6">
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+          <div class="px-4 py-5 sm:p-6">
+            <dt class="text-sm font-medium text-gray-500 truncate">
+              Total Produtos
+            </dt>
+            <dd class="mt-1 text-3xl font-semibold text-gray-900">
+              {{ totalProducts }}
+            </dd>
+          </div>
         </div>
-        <div>
-          <select
-            v-model="stockFilter"
-            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-          >
-            <option value="all">Todos níveis estoque</option>
-            <option value="low">Estoque baixo</option>
-            <option value="out">Esgotados</option>
-          </select>
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+          <div class="px-4 py-5 sm:p-6">
+            <dt class="text-sm font-medium text-gray-500 truncate">
+              Itens Estoque Baixo
+            </dt>
+            <dd class="mt-1 text-3xl font-semibold text-orange-600">
+              {{ lowStockItems }}
+            </dd>
+          </div>
+        </div>
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+          <div class="px-4 py-5 sm:p-6">
+            <dt class="text-sm font-medium text-gray-500 truncate">
+              Itens Esgotados
+            </dt>
+            <dd class="mt-1 text-3xl font-semibold text-red-600">
+              {{ outOfStockItems }}
+            </dd>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Inventory Table -->
-    <div class="bg-white shadow rounded-lg overflow-hidden">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-          <tr>
-            <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+      <!-- Search and Filter -->
+      <div class="bg-white shadow rounded-lg p-6 mb-6">
+        <div class="flex space-x-4">
+          <div class="flex-1">
+            <input
+              v-model="search"
+              type="text"
+              placeholder="Procurar produtos..."
+              class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+          </div>
+          <div>
+            <select
+              v-model="stockFilter"
+              class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             >
-              Produto
-            </th>
-            <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-            >
-              Qtde Estoque
-            </th>
-            <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-            >
-              Status
-            </th>
-            <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-            >
-              Ações
-            </th>
-          </tr>
-        </thead>
+              <option value="all">Todos níveis estoque</option>
+              <option value="low">Estoque baixo</option>
+              <option value="out">Esgotados</option>
+            </select>
+          </div>
+        </div>
+      </div>
 
-        <tbody class="bg-white divide-y divide-gray-200">
-          <tr v-for="item in filteredInventory" :key="item.id">
-            <td class="px-6 py-4">{{ item.name }}</td>
-            <td class="px-6 py-4">{{ item.quantity }}</td>
-            <td class="px-6 py-4">
-              <span
-                :class="[
-                  'px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-center w-16',
-                  getStockStatusClass(item.quantity),
-                ]"
+      <!-- Inventory Table -->
+      <div class="bg-white shadow rounded-lg overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
               >
-                {{ getStockStatus(item.quantity) }}
-              </span>
-            </td>
-            <td class="px-6 py-4">
-              <button
-                @click="updateStock(item)"
-                class="text-indigo-600 hover:text-indigo-900 p-2 rounded-md hover:bg-indigo-50"
-                title="Atualizar estoque"
+                Produto
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
               >
-                <svg
-                  class="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+                Qtde Estoque
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+              >
+                Status
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+              >
+                Ações
+              </th>
+            </tr>
+          </thead>
+
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr v-for="item in filteredInventory" :key="item.id">
+              <td class="px-6 py-4">{{ item.name }}</td>
+              <td class="px-6 py-4">{{ item.quantity }}</td>
+              <td class="px-6 py-4">
+                <span
+                  :class="[
+                    'px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-center w-16',
+                    getStockStatusClass(item.quantity),
+                  ]"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                  />
-                </svg>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                  {{ getStockStatus(item.quantity) }}
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                <button
+                  @click="updateStock(item)"
+                  class="text-indigo-600 hover:text-indigo-900 p-2 rounded-md hover:bg-indigo-50"
+                  title="Atualizar estoque"
+                >
+                  <svg
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                    />
+                  </svg>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Update Stock Modal -->
@@ -143,11 +149,13 @@
 <script>
 import { mapState, mapActions } from "vuex"
 import StockUpdate from "@/components/inventory/StockUpdate.vue"
+import Loader from "@/components/common/Loader.vue"
 
 export default {
   name: "Inventory",
   components: {
     StockUpdate,
+    Loader,
   },
   data() {
     return {
