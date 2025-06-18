@@ -59,7 +59,7 @@ Here's the modified code with sizes removed: ```vue
             <td class="px-6 py-4">
               <span
                 :class="[
-                  'px-2 inline-flex text-xs leading-5 font-semibold rounded-full',
+                  'px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-center w-16',
                   getStockStatusClass(item.quantity),
                 ]"
               >
@@ -174,9 +174,9 @@ export default {
     },
 
     getStockStatus(quantity) {
-      if (quantity === 0) return "Esgotado"
-      if (quantity <= this.lowStockThreshold) return "Estoque baixo"
-      return "Em estoque"
+      if (quantity === 0) return "Zero ❌"
+      if (quantity <= this.lowStockThreshold) return "Baixo 👎"
+      return "Ok 👍"
     },
 
     getStockStatusClass(quantity) {
