@@ -166,6 +166,15 @@ const sales = {
         commit("SET_LOADING", false)
       }
     },
+    async deleteSale({ commit, dispatch }, saleId) {
+      try {
+        await salesService.delete(saleId)
+        dispatch("fetchSales")
+      } catch (error) {
+        commit("SET_ERROR", error.message)
+        throw error
+      }
+    },
   },
 }
 

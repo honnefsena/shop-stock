@@ -37,7 +37,7 @@
             </th>
 
             <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase w-32 text-center"
             >
               Ações
             </th>
@@ -50,18 +50,46 @@
             <td class="px-6 py-4">${{ product.sell_price }}</td>
 
             <td class="px-6 py-4">
-              <button
-                @click="editProduct(product)"
-                class="text-indigo-600 hover:text-indigo-900 mr-3"
-              >
-                Editar
-              </button>
-              <button
-                @click="updateStock(product)"
-                class="text-green-600 hover:text-green-900"
-              >
-                Estoque
-              </button>
+              <div class="flex space-x-2">
+                <button
+                  @click="editProduct(product)"
+                  class="text-indigo-600 hover:text-indigo-900 p-2 rounded-md hover:bg-indigo-50"
+                  title="Editar"
+                >
+                  <svg
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    />
+                  </svg>
+                </button>
+                <button
+                  @click="updateStock(product)"
+                  class="text-green-600 hover:text-green-900 p-2 rounded-md hover:bg-green-50"
+                  title="Atualizar estoque"
+                >
+                  <svg
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                    />
+                  </svg>
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>

@@ -37,4 +37,5 @@ export const salesService = {
   getAll: () => api.get("/sales"),
   getSaleReport: (params) => api.get("/sales/report", { params }),
   getById: (id) => api.get(`/sales/${id}`),
+  delete: (id) => api.delete(`/sales/${id}`),
 }
