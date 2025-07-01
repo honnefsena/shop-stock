@@ -36,6 +36,12 @@ export const salesService = {
   create: (data) => api.post("/sales", data),
   getAll: () => api.get("/sales"),
   getSaleReport: (params) => api.get("/sales/report", { params }),
+  getPublisherReport: (params) => api.get("/sales/publisher-report", { params }),
   getById: (id) => api.get(`/sales/${id}`),
   delete: (id) => api.delete(`/sales/${id}`),
+}
+
+// Publisher Service
+export const publisherService = {
+  getAll: () => api.get("/publishers"),
 }

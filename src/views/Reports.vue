@@ -34,6 +34,7 @@
       <StockReport v-if="currentTab === 'stock'" />
       <SalesReport v-if="currentTab === 'sales'" />
       <PaymentReport v-if="currentTab === 'payment'" />
+      <PublisherReport v-if="currentTab === 'publisher'" />
     </div>
   </div>
 </template>
@@ -42,6 +43,7 @@
 import StockReport from "@/views/Reports/StockReport.vue"
 import SalesReport from "@/views/Reports/SalesReport.vue"
 import PaymentReport from "@/views/Reports/PaymentReport.vue"
+import PublisherReport from "@/views/Reports/PublisherReport.vue"
 import Loader from "@/components/common/Loader.vue"
 
 export default {
@@ -50,6 +52,7 @@ export default {
     StockReport,
     SalesReport,
     PaymentReport,
+    PublisherReport,
     Loader,
   },
   data() {
@@ -60,6 +63,7 @@ export default {
         { name: "stock", label: "Estoque" },
         { name: "sales", label: "Vendas" },
         { name: "payment", label: "Método de pagto" },
+        { name: "publisher", label: "Editora" },
       ],
     }
   },
